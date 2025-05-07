@@ -115,26 +115,38 @@ app.post('/generate-invoice', authenticateToken, async (req, res) => {
         color: blue,
     });
 
-    // Logo placeholder (ellipse)
     const logoX = borderMargin + 35;
     const logoY = pageHeight - borderMargin - headerHeight / 2;
     const logoWidth = 40; // width similar to 2*logoRadiusX
     const logoHeight = 40; // height similar to 2*logoRadiusY
-       // Embed logo image
-    let logoImage;
+    let schoolNameX;
+    let logoDrawn = false;
     try {
         const logoPath = path.join(__dirname, 'WhatsApp Image 2025-05-07 at 7.50.44 PM.jpeg');
         const logoImageBytes = fs.readFileSync(logoPath);
-        logoImage = await pdfDoc.embedJpg(logoImageBytes);
+        const logoImage = await pdfDoc.embedJpg(logoImageBytes);
         page.drawImage(logoImage, {
             x: logoX - logoWidth / 2,
             y: logoY - logoHeight / 2 + 5, // Adjust vertical position slightly
             width: logoWidth,
             height: logoHeight,
         });
+        schoolNameX = logoX + logoWidth + 15;
+        logoDrawn = true;
     } catch (err) {
         console.error('Failed to load or embed logo image:', err);
-        // Optionally, draw a placeholder or skip drawing the logo
+        // Draw ellipse as fallback
+        const logoRadiusX = 20;
+        const logoRadiusY = 20;
+        page.drawEllipse({
+            x: logoX,
+            y: logoY + 5, // Adjust vertical position slightly
+            xScale: logoRadiusX,
+            yScale: logoRadiusY,
+            borderColor: rgb(0.8, 0.2, 0.2),
+            borderWidth: 1.2,
+        });
+        schoolNameX = logoX + logoRadiusX + 15;
     }
 
     // School name and address
