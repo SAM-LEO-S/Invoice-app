@@ -122,7 +122,7 @@ app.post('/generate-invoice', authenticateToken, async (req, res) => {
     let schoolNameX;
     let logoDrawn = false;
     try {
-        const logoPath = path.join(__dirname, 'WhatsApp Image 2025-05-07 at 7.50.44 PM.jpeg');
+        const logoPath = path.join(__dirname, 'icon.jpeg');
         const logoImageBytes = fs.readFileSync(logoPath);
         const logoImage = await pdfDoc.embedJpg(logoImageBytes);
         page.drawImage(logoImage, {
