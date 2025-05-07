@@ -17,7 +17,7 @@ export default function Register() {
       return;
     }
     try {
-      await axios.post('http://localhost:4000/register', { username, password });
+      await axios.post('https://invoice-app-08lz.onrender.com/register', { username, password });
       setSuccess('Registration successful! You can now log in.');
       setUsername('');
       setPassword('');
