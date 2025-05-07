@@ -86,11 +86,11 @@ export default function InvoiceForm() {
     }
     try {
       const token = localStorage.getItem('token');
-      const res = await axios.post('http://localhost:4000/generate-invoice', form, {
+      const res = await axios.post('https://invoice-app-08lz.onrender.com/generate-invoice', form, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setMessage('Invoice generated!');
-      window.open(`http://localhost:4000/download/${res.data.filename}`);
+      window.open(`https://invoice-app-08lz.onrender.com/download/${res.data.filename}`);
     } catch (err) {
       setMessage('Error generating invoice');
     }
