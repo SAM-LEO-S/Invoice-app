@@ -7,7 +7,7 @@ export default function InvoiceList() {
 
   const search = async () => {
     const token = localStorage.getItem('token');
-    const res = await axios.get('http://localhost:4000/invoices', {
+    const res = await axios.get('https://invoice-app-08lz.onrender.com/invoices', {
       params: { studentName },
       headers: { Authorization: `Bearer ${token}` }
     });
