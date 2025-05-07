@@ -115,7 +115,7 @@ app.post('/generate-invoice', authenticateToken, async (req, res) => {
         color: blue,
     });
 
-    const logoX = borderMargin + 35;
+   const logoX = borderMargin + 35;
     const logoY = pageHeight - borderMargin - headerHeight / 2;
     const logoWidth = 40; // width similar to 2*logoRadiusX
     const logoHeight = 40; // height similar to 2*logoRadiusY
@@ -127,7 +127,7 @@ app.post('/generate-invoice', authenticateToken, async (req, res) => {
         const logoImage = await pdfDoc.embedJpg(logoImageBytes);
         page.drawImage(logoImage, {
             x: logoX - logoWidth / 2,
-            y: logoY - logoHeight / 2 + 5, // Adjust vertical position slightly
+            y: logoY - logoHeight / 2 + 5,
             width: logoWidth,
             height: logoHeight,
         });
@@ -140,7 +140,7 @@ app.post('/generate-invoice', authenticateToken, async (req, res) => {
         const logoRadiusY = 20;
         page.drawEllipse({
             x: logoX,
-            y: logoY + 5, // Adjust vertical position slightly
+            y: logoY + 5,
             xScale: logoRadiusX,
             yScale: logoRadiusY,
             borderColor: rgb(0.8, 0.2, 0.2),
