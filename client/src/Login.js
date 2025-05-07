@@ -9,7 +9,7 @@ export default function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post('http://localhost:4000/login', { username, password });
+      const res = await axios.post('https://invoice-app-08lz.onrender.com/login', { username, password });
       localStorage.setItem('token', res.data.token);
       window.location = '/generate';
     } catch (err) {
