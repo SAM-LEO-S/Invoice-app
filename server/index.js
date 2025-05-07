@@ -120,15 +120,22 @@ app.post('/generate-invoice', authenticateToken, async (req, res) => {
     const logoY = pageHeight - borderMargin - headerHeight / 2;
     const logoWidth = 40; // width similar to 2*logoRadiusX
     const logoHeight = 40; // height similar to 2*logoRadiusY
-    const logoPath = path.join(__dirname, 'WhatsApp Image 2025-05-07 at 7.50.44 PM.jpeg');
-    const logoImageBytes = fs.readFileSync(logoPath);
-    const logoImage = await pdfDoc.embedJpg(logoImageBytes);
-    page.drawImage(logoImage, {
-        x: logoX - logoWidth / 2,
-        y: logoY - logoHeight / 2 + 5, // Adjust vertical position slightly
-        width: logoWidth,
-        height: logoHeight,
-    });
+       // Embed logo image
+    let logoImage;
+    try {
+        const logoPath = path.join(__dirname, 'WhatsApp Image 2025-05-07 at 7.50.44 PM.jpeg');
+        const logoImageBytes = fs.readFileSync(logoPath);
+        logoImage = await pdfDoc.embedJpg(logoImageBytes);
+        page.drawImage(logoImage, {
+            x: logoX - logoWidth / 2,
+            y: logoY - logoHeight / 2 + 5, // Adjust vertical position slightly
+            width: logoWidth,
+            height: logoHeight,
+        });
+    } catch (err) {
+        console.error('Failed to load or embed logo image:', err);
+        // Optionally, draw a placeholder or skip drawing the logo
+    }
 
     // School name and address
     const schoolNameX = logoX + logoRadiusX + 15;
