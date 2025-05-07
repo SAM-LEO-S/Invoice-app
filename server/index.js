@@ -614,4 +614,8 @@ app.get('/download/:filename', (req, res) => {
     res.download(file);
 });
 
+app.get('/', (req, res) => {
+    res.send('Invoice API is running!');
+});
+
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
