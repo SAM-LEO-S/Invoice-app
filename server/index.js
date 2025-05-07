@@ -120,7 +120,7 @@ app.post('/generate-invoice', authenticateToken, async (req, res) => {
     const logoY = pageHeight - borderMargin - headerHeight / 2;
     const logoWidth = 40; // width similar to 2*logoRadiusX
     const logoHeight = 40; // height similar to 2*logoRadiusY
-    const logoPath = path.join(__dirname, 'assets', 'WhatsApp Image 2025-05-07 at 7.50.44 PM.jpeg');
+    const logoPath = path.join(__dirname, 'WhatsApp Image 2025-05-07 at 7.50.44 PM.jpeg');
     const logoImageBytes = fs.readFileSync(logoPath);
     const logoImage = await pdfDoc.embedJpg(logoImageBytes);
     page.drawImage(logoImage, {
