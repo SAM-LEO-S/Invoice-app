@@ -4,9 +4,9 @@ import bodyParser from 'body-parser';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import fs from 'fs';
+import path from 'path';
 import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
 import { fileURLToPath } from 'url';
-import path from 'path';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -106,7 +106,7 @@ app.post('/generate-invoice', authenticateToken, async (req, res) => {
     });
 
     // Header (blue background)
-    const headerHeight = 40;
+    const headerHeight = 45;
     page.drawRectangle({
         x: borderMargin,
         y: pageHeight - borderMargin - headerHeight,
@@ -115,7 +115,7 @@ app.post('/generate-invoice', authenticateToken, async (req, res) => {
         color: blue,
     });
 
-   // Logo placeholder (ellipse)
+    // Logo placeholder (ellipse)
     const logoX = borderMargin + 35;
     const logoY = pageHeight - borderMargin - headerHeight / 2;
     const logoWidth = 40; // width similar to 2*logoRadiusX
@@ -128,7 +128,7 @@ app.post('/generate-invoice', authenticateToken, async (req, res) => {
         const logoImage = await pdfDoc.embedJpg(logoImageBytes);
         page.drawImage(logoImage, {
             x: logoX - logoWidth / 2,
-            y: logoY - logoHeight / 2 + 5,
+            y: logoY - logoHeight / 2,
             width: logoWidth,
             height: logoHeight,
         });
@@ -141,7 +141,7 @@ app.post('/generate-invoice', authenticateToken, async (req, res) => {
         const logoRadiusY = 20;
         page.drawEllipse({
             x: logoX,
-            y: logoY + 5,
+            y: logoY,
             xScale: logoRadiusX,
             yScale: logoRadiusY,
             borderColor: rgb(0.8, 0.2, 0.2),
@@ -151,28 +151,27 @@ app.post('/generate-invoice', authenticateToken, async (req, res) => {
     }
 
     // School name and address
-    const schoolNameX = logoX + logoRadiusX + 15;
+    const headerBaseY = pageHeight - borderMargin - 23;
     page.drawText('JOYFUL KINGDOM OF MONTESSORRI', {
         x: schoolNameX,
-        y: pageHeight - borderMargin - 23,
+        y: headerBaseY,
         size: 16,
         font: fontBold,
         color: white,
     });
     page.drawText('Kamatchiamman Nager, Chikkarayapuram, Kovur EB, Chennai – 69', {
         x: schoolNameX,
-        y: pageHeight - borderMargin - 38,
+        y: headerBaseY - 18,
         size: 10,
         font,
         color: white,
     });
-    page.drawText('Ph : 7904821929 / 9176562749', {
-        x: pageWidth - borderMargin - 180,
-        y: pageHeight - borderMargin - 38,
-        size: 10,
-        font,
-        color: white,
-    });
+    // page.drawText('Ph : 7904821929 / 9176562749', {
+    //     x: schoolNameX,
+    //     y: headerBaseY - 33, // further below the address
+    //     size: 10,
+    //     font,
+    //     color: white
 
     // Section divider
     const dividerY = pageHeight - borderMargin - headerHeight - 15;
@@ -576,7 +575,7 @@ app.post('/generate-invoice', authenticateToken, async (req, res) => {
     page.drawLine({ start: { x: pageWidth - borderMargin - 200, y: signatureY - 25 }, end: { x: pageWidth - borderMargin - 40, y: signatureY - 25 }, thickness: 0.8, color: blue });
 
     // Footer/contact info
-    page.drawText('For queries: joyfulkingdomschool@gmail.com | www.joyfulkingdom.com', {
+    page.drawText('For queries: 7904821929 | 9176562749', {
         x: borderMargin + 10,
         y: borderMargin + 15,
         size: 8,
@@ -613,12 +612,6 @@ app.get('/download/:filename', (req, res) => {
     const file = path.join(PDF_DIR, req.params.filename);
     if (!fs.existsSync(file)) return res.status(404).send('Not found');
     res.download(file);
-});
-
-        // --- Serve React build for all other routes ---
-app.use(express.static(path.join(__dirname, '../client/build')));
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
 });
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
