@@ -115,7 +115,8 @@ app.post('/generate-invoice', authenticateToken, async (req, res) => {
         color: blue,
     });
 
-   const logoX = borderMargin + 35;
+   // Logo placeholder (ellipse)
+    const logoX = borderMargin + 35;
     const logoY = pageHeight - borderMargin - headerHeight / 2;
     const logoWidth = 40; // width similar to 2*logoRadiusX
     const logoHeight = 40; // height similar to 2*logoRadiusY
