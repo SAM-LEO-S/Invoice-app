@@ -614,8 +614,14 @@ app.get('/download/:filename', (req, res) => {
     res.download(file);
 });
 
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../client/public', 'index.html'));
-});
+if (process.env.NODE_ENV === 'production') {
+  // Serve static files from the React build folder
+  app.use(express.static(path.join(__dirname, '../client/build')));
+
+  // Catch-all route to serve the React app
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
+  });
+}
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
