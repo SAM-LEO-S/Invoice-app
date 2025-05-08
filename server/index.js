@@ -614,8 +614,9 @@ app.get('/download/:filename', (req, res) => {
     res.download(file);
 });
 
-app.get('/', (req, res) => {
-    res.redirect('/login');
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'build', 'index.js'));
 });
+
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
