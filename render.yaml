@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: invoice-app
+    env: node
+    buildCommand: |
+      npm install
+      cd server && npm install
+      npm run build
+    startCommand: cd server && node index.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 4000
+      - key: JWT_SECRET
+        generateValue: true 
